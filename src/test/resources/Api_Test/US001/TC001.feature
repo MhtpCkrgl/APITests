@@ -1,0 +1,1 @@
+sırma confilic yaptp
