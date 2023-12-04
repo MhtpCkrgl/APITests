@@ -8,7 +8,7 @@ import org.junit.Before;
 import static utilities.Authentication.generateToken;
 
 public class bookId {
-    protected static RequestSpecification spec;
+    public static RequestSpecification spec;
     @Before
     public static void setUp(String clientName, String clientEmail) {
         spec = new RequestSpecBuilder()
