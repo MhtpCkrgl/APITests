@@ -1,2 +1,0 @@
-sırma confilic yaptp
-Feature:
