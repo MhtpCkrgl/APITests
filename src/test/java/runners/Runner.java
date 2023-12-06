@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
         "json:target/json-reports/cucumber1.json",
         "junit:target/xml-report/cucumber.xml",
         "rerun:TestOutput/failed_scenario.txt"},
-        features = "src/test/resources/Api_Test/alparslan",
+        features = "src/test/resources/features",
         glue = {"stepDefinition","hooks"},
         tags = "@WithoutToken",
         dryRun = false,
