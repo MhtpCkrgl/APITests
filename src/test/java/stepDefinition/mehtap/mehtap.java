@@ -1,5 +1,6 @@
 package stepDefinition.mehtap;
 
+import base_url.BaseUrl;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -10,6 +11,7 @@ import testData.SimpleBookTestData;
 import java.util.HashMap;
 import java.util.Map;
 
+import static base_url.BaseUrl.setUpWithAuth;
 import static base_url.BaseUrl.spec;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -18,12 +20,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static utilities.ObjectMapperUtils.convertJsonToJava;
 
-public class mehtap {
+public class mehtap extends BaseUrl {
     Response response;
     @Given("mc user sets url")
     public void mcUserGoesUrl() {
         //set the url
+        setUpWithAuth();
         spec.pathParam("first","orders");
+
     }
 
     @And("mc user send POST request to order book")
@@ -41,13 +45,13 @@ public class mehtap {
 
     @Then("mc user verify status code is {int}")
     public void mcUserVerifyStatusCodeIs(int arg0) {
-        assertTrue(response.statusCode()==201);
+        assertEquals(201, response.statusCode());
     }
 
     @Then("mc user validates the response body")
     public void mcUserValidatesTheResponseBody() {
         //do assertion
-        Map<String,String> actualData =convertJsonToJava(response.asString(), HashMap.class);
+        HashMap actualData =convertJsonToJava(response.asString(), HashMap.class);
         assertEquals(actualData.get("created"),true);
       //orderId icin dogrulama yaopmak biraz sikinti cunku her seferinde farkli bir data dondurecek
         //assertTrue(response.body("orderId",hasSize(1)));
