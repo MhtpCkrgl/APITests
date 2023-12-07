@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
         "rerun:TestOutput/failed_scenario.txt"},
         features = "src/test/resources/features",
         glue = {"stepDefinition","hooks"},
-        tags = "@sdk",
+        tags = "@WithoutToken",
         dryRun = false,
         monochrome = true
 
@@ -25,7 +25,6 @@ import org.junit.runner.RunWith;
 
 public class Runner {
 }
-
 
 
 
