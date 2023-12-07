@@ -1,5 +1,5 @@
 Feature:
-  @mc
+  @sdk
   Scenario:
     Given mc user sets url
     And mc user send POST request to order book
