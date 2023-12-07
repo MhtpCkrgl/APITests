@@ -23,10 +23,12 @@ import static org.junit.Assert.assertTrue;
 import static utilities.ObjectMapperUtils.convertJsonToJava;
 
 public class mehtap extends BaseUrl {
-    static int bookId;
-    Faker fakerName;
+    static int bookId=ReusableMethods.generateRandomNumber();
+    static Faker fakerName= new Faker();
     Response response;
-    static String customerName;
+    static String customerName= fakerName.name().fullName();
+
+
 
     @Given("mc user sets url")
     public void mcUserGoesUrl() {
@@ -47,9 +49,7 @@ public class mehtap extends BaseUrl {
     public void mcUserSendPOSTRequestToOrderBook() {
         // set the expected data
         SimpleBookTestData obj = new SimpleBookTestData();
-        bookId = ReusableMethods.generateRandomNumber();
-        fakerName = new Faker();
-        customerName = fakerName.name().fullName();
+
         Map<String, Object> expectedData = obj.orderBookRequestMethod(bookId, customerName);
 
 
