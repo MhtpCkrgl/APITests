@@ -1,5 +1,6 @@
 package stepDefinition.mehtap;
 
+import base_url.BaseUrl;
 import com.github.javafaker.Faker;
 import io.cucumber.java.en.And;
 import io.restassured.response.Response;
@@ -14,7 +15,7 @@ import static io.restassured.RestAssured.given;
 import static stepDefinition.mehtap.mehtap.bookId;
 import static stepDefinition.mehtap.mehtap.customerName;
 
-public class mc_GetAllBookOrderStep_Definition {
+public class mc_GetAllBookOrderStep_Definition extends BaseUrl {
 
     Response response;
 
@@ -26,7 +27,7 @@ public class mc_GetAllBookOrderStep_Definition {
         Map<String, Object> expectedData = obj.orderBookRequestMethod(bookId, customerName);
 
         // send the request and get the response
-        response = given(spec).body(expectedData).when().post("{first}");
+        response = given(spec).body(expectedData).when().get("{first}");
         response.prettyPrint();
 
     }
