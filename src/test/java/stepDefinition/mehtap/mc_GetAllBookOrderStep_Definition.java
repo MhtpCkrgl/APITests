@@ -28,6 +28,5 @@ public class mc_GetAllBookOrderStep_Definition {
         // send the request and get the response
         response = given(spec).body(expectedData).when().post("{first}");
         response.prettyPrint();
-
     }
 }

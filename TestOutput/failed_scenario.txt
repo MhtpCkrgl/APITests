@@ -1,1 +1,1 @@
-file:src/test/resources/features/aa_ORNEK/US04_alp_SubmitAnOrder.feature:4
+file:src/test/resources/features/fatma/US03_TC01_TC02_GetABook.feature:8
