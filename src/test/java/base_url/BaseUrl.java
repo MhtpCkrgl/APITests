@@ -5,6 +5,7 @@ import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import org.junit.Test;
+import utilities.ConfigReader;
 
 import static utilities.Authentication.generateToken;
 
@@ -17,7 +18,7 @@ public class BaseUrl {
 
         spec = new RequestSpecBuilder()
                 .setContentType(ContentType.JSON)
-                .setBaseUri("https://simple-books-api.glitch.me")//base url
+                .setBaseUri(ConfigReader.getProperty("url"))//base url
              //   .addHeader("Authorization","Bearer "+generateToken())//token
                 .build();
     }
@@ -26,8 +27,8 @@ public class BaseUrl {
 
         spec = new RequestSpecBuilder()
                 .setContentType(ContentType.JSON)
-                .setBaseUri("https://simple-books-api.glitch.me")//base url
-                .addHeader("Authorization","Bearer "+generateToken())//token
+                .setBaseUri(ConfigReader.getProperty("url"))//base url
+                .addHeader("Authorization",generateToken())//token
                 .build();
     }
 

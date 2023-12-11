@@ -7,6 +7,7 @@ import io.restassured.response.Response;
 import testData.GetBookTestData;
 import utilities.ObjectMapperUtils;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 import static base_url.BaseUrl.spec;
@@ -76,5 +77,25 @@ public class US03_TC01_TC02_GetABook {
     }
 
 
+    @Given("User send GET request to get a book \\(using invalid bookId)")
+    public void userSendGETRequestToGetABookUsingInvalidBookId() {
+        spec.pathParams("first", "books","second",0);
+
+        response = given(spec).get("{first}/{second}");
+        response.prettyPrint();
     }
+
+    @Then("Assert the response body returns an error message")
+    public void assertTheResponseBodyReturnsAnErrorMessage() {
+        response.then().statusCode(400).
+                body(containsString("No book with id 0"))
+                .body("error",equalTo("No book with id 0"));
+
+        JsonPath jsonPath = response.jsonPath();
+        String errorMessage = jsonPath.getString("error");;
+        assertEquals("No book with id 0",errorMessage);
+
+    }
+}
+
 
