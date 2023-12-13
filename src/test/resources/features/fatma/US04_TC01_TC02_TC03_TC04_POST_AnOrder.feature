@@ -3,6 +3,16 @@ Feature:
   Scenario:
     Given User send POST request to order a book
     Then User verify status code is 201 and validate the response body
+    And User send GET request to get an ordered books using valid orderId
+    Then Verify the response body consists of the information about the ordered book
+    And User send PATCH request to update the ordered book using valid orderId
+    Then Assert the response body is empty
+    And User send GET request to get updated ordered book using valid orderId
+    Then Assert the response body has been updated
+    And User send DELETE request to delete the order
+    Then Assert the order deleted successfully
+    And User send GET request to get deleted order
+    Then Verify the response body contains error message
 
 @WithoutToken @PostAnOrder
   Scenario:

@@ -6,16 +6,13 @@ import io.cucumber.java.en.Then;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import testData.SimpleBookTestData;
-import utilities.ReusableMethods;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 
 import static base_url.BaseUrl.spec;
 import static io.restassured.RestAssured.given;
-import static java.lang.Math.random;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
@@ -40,19 +37,18 @@ public class US04_TC01_TC02_TC03_PostAnOrder {
 
         SimpleBookTestData sentBody = new SimpleBookTestData();
         Random random = new Random();
-        boolean sart = bookId != 0 && bookId != 2;
-        do {
+        Map<String, Object> expectedData;
+        for (int i=0; i<7;i++) {
             bookId = random.nextInt(7);
-            if (!sart) {
+            if (bookId==2 || bookId==0){
                 continue;
             }
-        } while (!sart);
-
-
-        Map<String, Object> expectedData = sentBody.orderBookRequestMethod(bookId, customerName);
-        System.out.println(bookId);
-        response = given(spec).body(expectedData).post("{first}");
-        response.prettyPrint();
+            expectedData = sentBody.orderBookRequestMethod(bookId, customerName);
+            System.out.println(bookId);
+            response = given(spec).body(expectedData).post("{first}");
+            response.prettyPrint();
+            break;
+        }
 
         assertEquals(statuscode, response.statusCode());
         assertEquals(response.contentType(), "application/json; charset=utf-8");
@@ -61,28 +57,30 @@ public class US04_TC01_TC02_TC03_PostAnOrder {
         assertEquals(true, actualData.get("created"));
 
         orderId = response.jsonPath().getString("orderId");
+
     }
 
 
     @Given("User send POST request to order a book \\(without token)")
     public void userSendPOSTRequestToOrderABookWithoutToken() {
 
+
         SimpleBookTestData sentBody = new SimpleBookTestData();
         Random random = new Random();
-        boolean sart = bookId != 0 && bookId != 2;
-        do{
+        Map<String, Object> expectedData;
+        for (int i = 0; i < 7; i++) {
             bookId = random.nextInt(7);
-        }while(sart);
-
-            Map<String, Object> expectedData = sentBody.orderBookRequestMethod(bookId, customerName);
+            if (bookId == 2 || bookId == 0) {
+                continue;
+            }
+            expectedData = sentBody.orderBookRequestMethod(bookId, customerName);
             System.out.println(bookId);
-
-
-        spec.pathParam("first", "orders");
-        response = given(spec).body(expectedData).post("{first}");
-        response.prettyPrint();
+            response = given(spec).body(expectedData).post("{first}");
+            response.prettyPrint();
+            break;
+        }
     }
-    @Then("Assert status code is {int} and validate the response body")
+        @Then("Assert status code is {int} and validate the response body")
     public void assertStatusCodeIsAndValidateTheResponseBody(int durumkodu) {
         assertEquals(durumkodu, response.statusCode());
         response.then().statusCode(durumkodu).
