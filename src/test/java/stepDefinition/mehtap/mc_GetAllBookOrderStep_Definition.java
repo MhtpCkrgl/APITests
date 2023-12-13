@@ -29,6 +29,5 @@ public class mc_GetAllBookOrderStep_Definition extends BaseUrl {
         // send the request and get the response
         response = given(spec).body(expectedData).when().get("{first}");
         response.prettyPrint();
-
     }
 }
