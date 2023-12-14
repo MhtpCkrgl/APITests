@@ -35,8 +35,15 @@ public class GetBookTestData extends BaseUrl {
 //                    "\"currentstock\": \""+currentStock+"\",\n" +
                     "\"available\": \""+available+"\"\n" +
                     "}";
-
-
         }
+    public static String convertJsonToString_2 (String id, String name, String type, String available){
+        return "{\n" +
+                "\"id\": "+id+",\n" +
+                "\"name\": \""+name+"\",\n" +
+                "\"type\": \""+type+"\",\n" +
+                "\"available\": \""+available+"\"\n" +
+                "}";
+    }
+
     }
 
