@@ -57,6 +57,9 @@ public class US03_TC01_TC02_GetABook {
         assertEquals(currentstock,actCurrentStock);
         assertEquals(available,actAvailable);
 
+//asagidaki kodlarda sikinti yok "current-stock" degerindeki "-" isareti nedeniyle
+// serialization yapilamiyor hatasi veriyor.
+//ayni hatayi type degeri icin(non-fiction) GetListOfBooks'da (US02) da veriyor.
         String body = GetBookTestData.convertJsonToString(id,name,author,type,price,available);
         BookPOJO expectedData = ObjectMapperUtils.convertJsonToJava(body, BookPOJO.class);
         System.out.println("expectedData = " + expectedData);

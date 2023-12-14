@@ -4,6 +4,12 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import testData.GetBookTestData;
+import utilities.ObjectMapperUtils;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static base_url.BaseUrl.spec;
 import static io.restassured.RestAssured.given;
@@ -15,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 
 public class US02_TC01_TC02_TC03_Get_ListOfBooks {
     Response response;
+    Map<String, Object> expectedDataMap;
     @Given("User send GET request to get the list of books")
     public void userSendGETRequestToGetTheListOfBooks() {
         spec.pathParam("first", "books");
@@ -25,43 +32,35 @@ public class US02_TC01_TC02_TC03_Get_ListOfBooks {
 
     @Then("Verify the response body consists of books {string}, {string}, {string}, {string}")
     public void verifyTheResponseBodyConsistsOfBooks(String id, String name, String type, String available) {
-        response.then().statusCode(200).
-                body( hasItems(greaterThan(0)));
+        response.then().statusCode(200);
         JsonPath jsonPath = response.jsonPath();
-        int size = response.jsonPath().getList("findAll{it.id}.id").size();
-        assertTrue(size>0);
+        List<Object> list = jsonPath.getList("");
+        assertTrue(list.size() > 0);
 
-        String actId = response.jsonPath().getList("findAll{it.id}.id").get(4).toString();
-        String actName = jsonPath.getList("findAll{it.name}.name").get(4).toString();
-//        String actAuthor = jsonPath.getList("findAll{it.name=='"+name+"'}.author").get(0).toString();
-        String actType = jsonPath.getList("findAll{it.type}.type").get(4).toString();
-//        String actPrice = jsonPath.getList("findAll{it.name=='"+name+"'}.price").get(0).toString();
-//        String actCurrentStock = jsonPath.getList("findAll{it.name=='"+name+"'}.current-stock").get(0).toString();
-        String actAvailable = jsonPath.getList("findAll{it.available}.available").get(4).toString();
+        List<String> idList = response.jsonPath().getList("findAll{it.id}.id");
+        List<String> nameList = response.jsonPath().getList("findAll{it.name}.name");
+        List<String> typeList = response.jsonPath().getList("findAll{it.type}.type");
+        List<String> availableList = response.jsonPath().getList("findAll{it.available}.available");
 
-        assertEquals(id,actId);
-        assertEquals(name,actName);
-       // assertEquals(author,actAuthor);
-        assertEquals(type,actType);
-//        assertEquals(price,actPrice);
-//        assertEquals(currentstock,actCurrentStock);
-        assertEquals(available,actAvailable);
+        assertEquals(id, String.valueOf(idList.get(0)));
+        assertEquals(name, String.valueOf(nameList.get(0)));
+        assertEquals(type, String.valueOf(typeList.get(0)));
+        assertEquals(available, String.valueOf(availableList.get(0)));
 
-//        String body = GetListOfBooksTestData.convertJsonToString(5,"Untamed","non-fiction",true);
-//        BookListPojo expectedData = ObjectMapperUtils.convertJsonToJava(body, BookListPojo.class);
-//        System.out.println("expectedData = " + expectedData);
-//
-//        BookListPojo  actualData = ObjectMapperUtils.convertJsonToJava(response.asString(), BookListPojo.class);
-//        System.out.println("actualData = " + actualData);
-//
-//        assertEquals(expectedData.getId(),actualData.getId());
-//        assertEquals(expectedData.getName(),actualData.getName());
-//        assertEquals(expectedData.getType(),actualData.getType());
-//        assertEquals(expectedData.getAvailable(),actualData.getAvailable());
+//asagidaki kodlarda sikinti yok ancak response'daki type (non-fiction) "-"
+// isareti icerdigi icin konsolda "Cannot deserialize value of type" hatasi veriyor.
+//ayni hatayi current-stock degeri icin GetABook'da (US03) da veriyor.
 
+        String body = GetBookTestData.convertJsonToString_2("3","The Vanishing Half","fiction","true");
+        BookPOJO expectedData = ObjectMapperUtils.convertJsonToJava(body, BookPOJO.class);
+        BookPOJO  actualData = ObjectMapperUtils.convertJsonToJava(response.asString(), BookPOJO.class);
+        System.out.println("actualData = " + actualData);
 
+        assertEquals(expectedData.getId(), actualData.getId());
+        assertEquals(expectedData.getName(),actualData.getName());
+        assertEquals(expectedData.getType(),actualData.getType());
+        assertEquals(expectedData.isAvailable(),actualData.isAvailable());
     }
-
     @Given("User send GET request to get list of books \\(using valid parameters)")
     public void userSendGETRequestToGetListOfBooksUsingValidParameters() {
         spec.pathParam("first", "books").
