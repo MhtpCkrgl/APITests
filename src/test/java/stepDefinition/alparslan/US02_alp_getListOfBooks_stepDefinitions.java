@@ -4,11 +4,13 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.apache.http.client.HttpResponseException;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import testData.alp_testData;
 
 import java.util.HashMap;
@@ -23,12 +25,15 @@ import static utilities.ObjectMapperUtils.convertJsonToJava;
 public class US02_alp_getListOfBooks_stepDefinitions {
 
     Response response;
+    HashMap availableBookData;
 
+    static int alp_availableBookId;
+    static int alp_unAvailableBookId;
 
     @When("alp User sends GET Request to get list of books")
     public void alpUserSendsGETRequestToGetListOfBooks() {
         // set the url and request body
-        spec.pathParam("param","books");
+        spec.pathParam("param", "books");
         response = given().spec(spec)
                 .when()
                 .get("{param}");
@@ -59,7 +64,7 @@ public class US02_alp_getListOfBooks_stepDefinitions {
 
         for (int i = 0; i < responseBody.length(); i++) {
             MatcherAssert.assertThat(responseBody.get(i).toString()
-                    ,is(equalTo(expectedData.get(i).toString())));
+                    , is(equalTo(expectedData.get(i).toString())));
         }
     }
 
@@ -68,8 +73,8 @@ public class US02_alp_getListOfBooks_stepDefinitions {
     public void alpUserSendsGETRequestWithParamsToGetListOfBooks() {
 
         // set the url and request body
-        spec.pathParam("param","books")
-                .queryParams("type","non-fiction","limit","2");
+        spec.pathParam("param", "books")
+                .queryParams("type", "non-fiction", "limit", "2");
         response = given().spec(spec)
                 .when()
                 .get("{param}");
@@ -77,7 +82,6 @@ public class US02_alp_getListOfBooks_stepDefinitions {
 
 
     }
-
 
 
     @And("alp User validates response bodyy")
@@ -93,9 +97,16 @@ public class US02_alp_getListOfBooks_stepDefinitions {
 
         for (int i = 0; i < responseBody.length(); i++) {
             MatcherAssert.assertThat(responseBody.get(i).toString()
-                    ,is(equalTo(expectedData.get(i).toString())));
+                    , is(equalTo(expectedData.get(i).toString())));
+
+            availableBookData = convertJsonToJava(responseBody.get(i).toString(), HashMap.class);
+            if (availableBookData.get("available").toString().equals("true")) {
+                alp_availableBookId = Integer.parseInt(availableBookData.get("id").toString());
+            } else alp_unAvailableBookId = Integer.parseInt(availableBookData.get("id").toString());
         }
 
+//        System.out.println("alp_availableBookId = " + alp_availableBookId);
+//        System.out.println("alp_unAvailableBookId = " + alp_unAvailableBookId);
 
 
     }
@@ -103,13 +114,13 @@ public class US02_alp_getListOfBooks_stepDefinitions {
     @When("alp User sends GET Request to get list of books with wrong params")
     public void alpUserSendsGETRequestToGetListOfBooksWithWrongParams() {
         // set the url and request body
-        spec.pathParam("param","books")
-                .queryParams("type","crime","limit","12");
+        spec.pathParam("param", "books")
+                .queryParams("type", "crime", "limit", "12");
 
-                    response = given().spec(spec)
-                            .when()
-                            .get("{param}");
-                    response.prettyPrint();
+        response = given().spec(spec)
+                .when()
+                .get("{param}");
+        response.prettyPrint();
     }
 
     @And("alp Validates the error message in the response")
@@ -122,6 +133,6 @@ public class US02_alp_getListOfBooks_stepDefinitions {
 
         alp_testData testData = new alp_testData();
         HashMap responseBody = convertJsonToJava(response.asString(), HashMap.class);
-        MatcherAssert.assertThat(responseBody.get("error"),is(equalTo(testData.errorMsgforBooks)));
+        MatcherAssert.assertThat(responseBody.get("error"), is(equalTo(testData.errorMsgforBooks)));
     }
 }
