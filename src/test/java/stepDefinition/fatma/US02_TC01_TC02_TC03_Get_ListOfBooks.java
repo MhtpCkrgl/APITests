@@ -47,13 +47,11 @@ public class US02_TC01_TC02_TC03_Get_ListOfBooks {
         assertEquals(type, String.valueOf(typeList.get(0)));
         assertEquals(available, String.valueOf(availableList.get(0)));
 
-//asagidaki kodlarda sikinti yok ancak response'daki type (non-fiction) "-"
-// isareti icerdigi icin konsolda "Cannot deserialize value of type" hatasi veriyor.
-//ayni hatayi current-stock degeri icin GetABook'da (US03) da veriyor.
+        String response2 = jsonPath.getString("type").replaceAll("non-fiction","nonfiction");
 
         String body = GetBookTestData.convertJsonToString_2("3","The Vanishing Half","fiction","true");
         BookPOJO expectedData = ObjectMapperUtils.convertJsonToJava(body, BookPOJO.class);
-        BookPOJO  actualData = ObjectMapperUtils.convertJsonToJava(response.asString(), BookPOJO.class);
+        BookPOJO  actualData = ObjectMapperUtils.convertJsonToJava(response2, BookPOJO.class);
         System.out.println("actualData = " + actualData);
 
         assertEquals(expectedData.getId(), actualData.getId());

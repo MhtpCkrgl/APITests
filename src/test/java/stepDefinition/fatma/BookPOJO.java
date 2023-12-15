@@ -1,11 +1,9 @@
 package stepDefinition.fatma;
 
-import io.cucumber.core.internal.com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 
 
 import java.io.Serializable;
-@JsonIgnoreProperties(ignoreUnknown = true)
+
 public class BookPOJO implements Serializable {
 
 	private int id;
@@ -13,19 +11,19 @@ public class BookPOJO implements Serializable {
 	private String author;
 	private String type;
 	private Object price;
-	private String currentstock;
+	private String currentStock;
 	private boolean available;
 
 	public BookPOJO() {
 	}
 
-	public BookPOJO(int id, String name, String author, String type, Object price, String currentstock, Boolean available) {
+	public BookPOJO(int id, String name, String author, String type, Object price, String currentStock, Boolean available) {
 		this.id = id;
 		this.name = name;
 		this.author = author;
 		this.type = type;
 		this.price = price;
-		this.currentstock = currentstock;
+		this.currentStock = currentStock;
 		this.available = available;
 	}
 
@@ -70,11 +68,11 @@ public class BookPOJO implements Serializable {
 	}
 
 	public void setCurrentStock(String currentStock){
-		this.currentstock = currentStock;
+		this.currentStock = currentStock;
 	}
 
 	public String getCurrentStock(){
-		return currentstock;
+		return currentStock;
 	}
 
 	public void setAvailable(boolean available){
@@ -94,7 +92,7 @@ public class BookPOJO implements Serializable {
 			",author = '" + author + '\'' + 
 			",type = '" + type + '\'' + 
 			",price = '" + price + '\'' + 
-			",currentstock = '" + currentstock + '\'' +
+			",currentStock = '" + currentStock + '\'' +
 			",available = '" + available + '\'' + 
 			"}";
 		}

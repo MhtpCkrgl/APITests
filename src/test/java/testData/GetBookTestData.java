@@ -25,14 +25,14 @@ public class GetBookTestData extends BaseUrl {
         }
 
 
-        public static String convertJsonToString (String id, String name, String author, String type, Object price, String currentstock, String available){
+        public static String convertJsonToString (String id, String name, String author, String type, Object price, String currentStock, String available){
             return "{\n" +
                     "\"id\": "+id+",\n" +
                     "\"name\": \""+name+"\",\n" +
                     "\"author\": \""+author+"\",\n" +
                     "\"type\": \""+type+"\",\n" +
                     "\"price\": \""+price+"\",\n" +
-                    "\"currentstock\": \""+currentstock+"\",\n" +
+                    "\"currentStock\": \""+currentStock+"\",\n" +
                     "\"available\": \""+available+"\"\n" +
                     "}";
         }

@@ -1,5 +1,6 @@
 package stepDefinition.fatma;
 
+import com.fasterxml.jackson.databind.util.ArrayBuilders;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.restassured.path.json.JsonPath;
@@ -30,7 +31,7 @@ public class US03_TC01_TC02_GetABook {
 
 
     @Then("Verify the response body consists of a book {string}, {string}, {string}, {string}, {string}, {string}, {string}")
-    public void verifyTheResponseBodyConsistsOfABook(String id, String name, String author, String type, String price, String currentstock, String available) {
+    public void verifyTheResponseBodyConsistsOfABook(String id, String name, String author, String type, String price, String currentStock, String available) {
         response.then().statusCode(200).
                 body("id", equalTo(4),
                         "name",equalTo("The Midnight Library"),
@@ -54,18 +55,14 @@ public class US03_TC01_TC02_GetABook {
          assertEquals(author,actAuthor);
         assertEquals(type,actType);
         assertEquals(price,actPrice);
-        assertEquals(currentstock,actCurrentStock);
+        assertEquals(currentStock,actCurrentStock);
         assertEquals(available,actAvailable);
 
-//asagidaki kodlarda sikinti yok "current-stock" degerindeki "-" isareti nedeniyle
-// serialization yapilamiyor hatasi veriyor.
-//ayni hatayi type degeri icin(non-fiction) GetListOfBooks'da (US02) da veriyor.
-        String body = GetBookTestData.convertJsonToString(id,name,author,type,price,currentstock,available);
-        String body2 = body.replaceAll("-","");
-        BookPOJO expectedData = ObjectMapperUtils.convertJsonToJava(body2, BookPOJO.class);
+        String response2 = response.asString().replaceAll("current-stock","currentStock");
+        String body = GetBookTestData.convertJsonToString(id,name,author,type,price,currentStock,available);
+       BookPOJO expectedData = ObjectMapperUtils.convertJsonToJava(body, BookPOJO.class);
+      // BookPOJO expectedData = new BookPOJO(Integer.parseInt(id),name,author,type,price,currentStock,Boolean.parseBoolean(available));
         System.out.println("expectedData = " + expectedData);
-
-        String response2 = response.asString().replaceAll("-","");
 
        BookPOJO  actualData = ObjectMapperUtils.convertJsonToJava(response2, BookPOJO.class);
         System.out.println("actualData = " + actualData);
@@ -75,9 +72,9 @@ public class US03_TC01_TC02_GetABook {
         assertEquals(expectedData.getName(),actualData.getName());
         assertEquals(expectedData.getAuthor(),actualData.getAuthor());
         assertEquals(expectedData.getType(),actualData.getType());
-        assertEquals(expectedData.getPrice(),actualData.getPrice());
-        assertEquals(currentstock,actualData.getCurrentStock());
-        assertEquals(expectedData.isAvailable(),actualData.isAvailable());
+        assertEquals(Double.parseDouble(price),actualData.getPrice());
+        assertEquals(currentStock,actualData.getCurrentStock());
+        assertEquals(Boolean.valueOf(available),actualData.isAvailable());
     }
 
 
