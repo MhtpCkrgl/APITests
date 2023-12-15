@@ -19,7 +19,7 @@ import org.junit.runner.RunWith;
         dryRun = false,
         monochrome = true
 
-//"@RunWithToken and @GetAllOrders"
+
 )
 
 
