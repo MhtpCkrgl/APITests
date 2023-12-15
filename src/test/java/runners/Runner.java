@@ -15,11 +15,11 @@ import org.junit.runner.RunWith;
         "rerun:TestOutput/failed_scenario.txt"},
         features = "src/test/resources/features",
         glue = {"stepDefinition","hooks"},
-        tags = "@RunWithToken and @GetAllOrders",
+        tags = "@wip",
         dryRun = false,
         monochrome = true
 
-
+//"@RunWithToken and @GetAllOrders"
 )
 
 
