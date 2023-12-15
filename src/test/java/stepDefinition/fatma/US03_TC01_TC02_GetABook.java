@@ -60,11 +60,12 @@ public class US03_TC01_TC02_GetABook {
 //asagidaki kodlarda sikinti yok "current-stock" degerindeki "-" isareti nedeniyle
 // serialization yapilamiyor hatasi veriyor.
 //ayni hatayi type degeri icin(non-fiction) GetListOfBooks'da (US02) da veriyor.
-        String body = GetBookTestData.convertJsonToString(id,name,author,type,price,available);
-        BookPOJO expectedData = ObjectMapperUtils.convertJsonToJava(body, BookPOJO.class);
+        String body = GetBookTestData.convertJsonToString(id,name,author,type,price,currentstock,available);
+        String body2 = body.replaceAll("-","");
+        BookPOJO expectedData = ObjectMapperUtils.convertJsonToJava(body2, BookPOJO.class);
         System.out.println("expectedData = " + expectedData);
 
-        String response2 = response.asString().replace("-","");
+        String response2 = response.asString().replaceAll("-","");
 
        BookPOJO  actualData = ObjectMapperUtils.convertJsonToJava(response2, BookPOJO.class);
         System.out.println("actualData = " + actualData);
