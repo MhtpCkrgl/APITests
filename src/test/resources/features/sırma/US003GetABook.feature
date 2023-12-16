@@ -15,11 +15,5 @@ Feature:GET A Book
      |6    |Viscount Who Loved Me |Julia Quinn                        |fiction       |15.6    | 1021         |  true      |
 
 
-      # | id | name                | type        | available |
-      # | 1 | The Russian          | fiction     | true   |
-      # | 2 | Just as I Am         | non-fiction | false  |
-      # | 3 | The Vanishing Half   | fiction     | true   |
-      # | 4 | The Midnight Library | non-fiction | true   |
-      # | 5 | Untamed              | non-fiction | true   |
-      # | 6 | Viscount Who Loved Me| fiction     | true   |
+     
 
