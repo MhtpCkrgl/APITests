@@ -1,5 +1,5 @@
 @WithoutToken  @listOf
-Feature:GET Status
+Feature:List Of Book
   Scenario Outline: List Of Book
     Given Kitaplari goruntuleyebilmek icin Get request hazirligi yapar
     When Kitaplari goruntuleyebilmek icin Get request gönderir
